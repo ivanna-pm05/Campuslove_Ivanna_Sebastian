@@ -29,7 +29,7 @@ namespace Campuslove_Ivanna_Sebastian.src.Shared.Configuration
             builder.Property(u => u.Carrera)
                    .HasMaxLength(100);
 
-            builder.Property(u => u.Intereces)
+            builder.Property(u => u.Intereses)
                    .HasMaxLength(200);
 
             builder.Property(u => u.Frases)

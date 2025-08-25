@@ -1,11 +1,19 @@
-﻿using System.ComponentModel.Design;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
+using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Application.Services;
+using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Infrastructure.Repositories;
+using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Services;
+using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Infrastructure.Repositories;
 using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI;
 using Campuslove_Ivanna_Sebastian.src.Shared.Helpers;
-using Microsoft.EntityFrameworkCore;
+
 
 var context = DbContextFactory.Create();
+
 bool salir = false;
-while (salir)
+while (!salir)
 {
     Console.Clear();
     Console.WriteLine("+========================================+");
@@ -19,22 +27,48 @@ while (salir)
     Console.WriteLine("+========================================+");
     Console.WriteLine();
     Console.WriteLine("Seleccione Una Opcion");
-    Console.WriteLine(" -> ");
+    int opm = LeerEntero("-> ");
     switch (opm)
     {
         case 1:
             await new MenuUsuarios(context).RenderMenu();
             break;
         case 2:
-            await new MenuPerfiles(context).RenderMenu();
+            var usuarioRepo = new UsuarioRepository(context);
+            var usuarioService = new UsuarioService(usuarioRepo);
+
+            var interaccionRepo = new InteraccionRepository(context);
+            var interaccionService = new InteraccionService(interaccionRepo);
+
+            int usuarioId = LeerEntero("Ingrese su ID de usuario para continuar: ");
+
+            var menuPerfiles = new MenuPerfiles(usuarioService, interaccionService, usuarioId);
+            await menuPerfiles.RenderMenu();
+             
             break;
         case 3:
-            await new MenuMaches(context).RenderMenu();
+            //await new MenuMaches(context).RenderMenu();
             break;
         case 4:
-            await new MenuEstadisticas(context).RenderMenu();
+            //  await new MenuEstadisticas(context).RenderMenu();
             break;
         case 5:
+            salir = true;
             break;
+        default:
+        Console.WriteLine("❗ Opción inválida.");
+        break;
+    }
+     int LeerEntero(string mensaje)
+    {
+        int valor;
+        while (true)
+        {
+            Console.Write(mensaje + " "); 
+        if (int.TryParse(Console.ReadLine(), out valor))
+            return valor;
+
+        Console.WriteLine("⚠️ Ingrese un número válido.");
+        }
     }
 }

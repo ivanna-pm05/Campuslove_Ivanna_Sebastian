@@ -8,9 +8,11 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Interface
 {
     public interface IUsuarioService
     {
-        Task RegistrarUsuarioAsync(string nombre, int edad, string genero, string carrera, string intereces, string frases);
-        Task EditarUsuario(int id, string NuevoNombre, int NuevaEdad, string NuevoGenero, string NuevaCarrera, string NuevoIntereces, string NuevaFrases);
-        Task EliminarUsuario(int id); 
+        Task RegistrarUsuarioAsync(string nombre, string clave, int edad, string genero, string carrera, string intereses, string frases);
+        Task EditarUsuario(int id, string NuevoNombre, int NuevaEdad, string NuevoGenero, string NuevaCarrera, string NuevoIntereses, string NuevaFrases);
+        Task EliminarUsuario(int id);
         Task<Usuario?> ObtenerUsuarioAsync(int id);
+        Task<IEnumerable<Usuario>> ConsultarJugadorAsync();
+        Task<Usuario?> ObtenerUsuarioPorNombreAsync(string nombre); 
     }
 }

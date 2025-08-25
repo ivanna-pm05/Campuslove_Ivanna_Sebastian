@@ -1,11 +1,15 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
+using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Interfaces;
 using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Domain.Entities;
 using Campuslove_Ivanna_Sebastian.src.Shared.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Infrastructure.Repositories
 {
-    public class UsuarioRepository
+    public class UsuarioRepository : IUsuarioRepository
     {
         private readonly AppDbContext _context;
 
@@ -14,41 +18,38 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Infrastructure.Reposi
             _context = context;
         }
 
-        // Crear usuario
-        public void Add(Usuario usuario)
+        public async Task<Usuario?> GetByIdAsync(int id)
         {
+            return await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Id == id);
+        }
+        public async Task<Usuario?> GetByNombreAsync(string nombre)
+        {
+            var n = (nombre ?? string.Empty).Trim();
+            return await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Nombre == n);
+        }
+        public async Task<bool> ExistsByNombreAsync(string nombre)
+        {
+            var n = (nombre ?? string.Empty).Trim();
+            return await _context.Usuarios.AnyAsync(u => u.Nombre == n);
+        }
+        public async Task<IEnumerable<Usuario?>> GetAllAsync() =>
+            await _context.Usuarios.ToListAsync();
+
+        public void Add(Usuario usuario) =>
             _context.Usuarios.Add(usuario);
+
+        public void Remove(Usuario usuario) =>
+            _context.Usuarios.Remove(usuario);
+        public void Update(Usuario usuario) =>
             _context.SaveChanges();
-        }
-
-        // Editar usuario
-        public void Update(Usuario usuario)
+        public async Task SaveAsync() =>
+            await _context.SaveChangesAsync();
+        public async Task<Usuario?> ObtenerUsuarioPorNombreAsync(string nombre)
         {
-            _context.Usuarios.Update(usuario);
-            _context.SaveChanges();
-        }
-
-        // Eliminar usuario
-        public void Delete(int id)
-        {
-            var usuario = _context.Usuarios.Find(id);
-            if (usuario != null)
-            {
-                _context.Usuarios.Remove(usuario);
-                _context.SaveChanges();
-            }
-        }
-
-        // Buscar usuario por Id
-        public Usuario GetById(int id)
-        {
-            return _context.Usuarios.Find(id);
-        }
-
-        // Obtener todos los usuarios
-        public IEnumerable<Usuario> GetAll()
-        {
-            return _context.Usuarios.ToList();
+            return await _context.Usuarios
+                .FirstOrDefaultAsync(u => u.Nombre == nombre);
         }
     }
 }

@@ -1,26 +1,36 @@
-using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Application.Interfaces;
 using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Domain.Entities;
+using Campuslove_Ivanna_Sebastian.src.Shared.Context;
+using Microsoft.EntityFrameworkCore;
 
 namespace Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Infrastructure.Repositories
 {
     public class InteraccionRepository : IInteraccionRepository
     {
-        private readonly List<Interaccion> _interacciones = new();
-        private int _nextId = 1;
+        private readonly AppDbContext _context;
 
-        public void Add(Interaccion interaccion)
+        public InteraccionRepository(AppDbContext context)
         {
-            interaccion.Id = _nextId++;
-            _interacciones.Add(interaccion);
+            _context = context;
         }
 
-        public IEnumerable<Interaccion> GetAll() => _interacciones;
+        public void Add(Interaccion interaccion) =>
+            _context.Interacciones.Add(interaccion);
 
-        public IEnumerable<Interaccion> GetByUsuario(int idUsuario)
-            => _interacciones.Where(i => i.IdUsuarioOrigen == idUsuario || i.IdUsuarioDestino == idUsuario);
+        public async Task<IEnumerable<Interaccion?>> GetAllAsync() =>
+            await _context.Interacciones.ToListAsync();
+
+        public async Task<IEnumerable<Interaccion?>> GetByUsuarioIdAsync(int idUsuario)
+        {
+            return await _context.Interacciones
+                .Where(i => i.IdUsuarioOrigen == idUsuario || i.IdUsuarioDestino == idUsuario)
+                .ToListAsync();
+        }
+
+        public async Task SaveAsync() =>
+            await _context.SaveChangesAsync();
     }
 }

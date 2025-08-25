@@ -1,6 +1,4 @@
-using System;
 using System.Collections.Generic;
-using System.Linq;
 using System.Threading.Tasks;
 using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Application.Interfaces;
 using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Domain.Entities;
@@ -16,26 +14,36 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Application.Serv
             _repository = repository;
         }
 
-        public void RegistrarInteraccion(int idUsuarioOrigen, int idUsuarioDestino, bool esLike)
+        public async Task RegistrarLikeAsync(int idUsuarioOrigen, int idUsuarioDestino)
         {
             var interaccion = new Interaccion
             {
                 IdUsuarioOrigen = idUsuarioOrigen,
                 IdUsuarioDestino = idUsuarioDestino,
-                EsLike = esLike
+                TipoInteraccion = TipoInteraccion.LIKE
             };
 
             _repository.Add(interaccion);
+            await _repository.SaveAsync();
         }
 
-        public IEnumerable<Interaccion> ObtenerInteraccionesDeUsuario(int idUsuario)
+        public async Task RegistrarDislikeAsync(int idUsuarioOrigen, int idUsuarioDestino)
         {
-            return _repository.GetByUsuario(idUsuario);
+            var interaccion = new Interaccion
+            {
+                IdUsuarioOrigen = idUsuarioOrigen,
+                IdUsuarioDestino = idUsuarioDestino,
+                TipoInteraccion = TipoInteraccion.DISLIKE
+            };
+
+            _repository.Add(interaccion);
+            await _repository.SaveAsync();
         }
 
-        public IEnumerable<Interaccion> ObtenerTodas()
+        public async Task<IEnumerable<Interaccion?>> ObtenerInteraccionesDeUsuarioAsync(int idUsuario)
         {
-            return _repository.GetAll();
+            return await _repository.GetByUsuarioIdAsync(idUsuario);
         }
+
     }
 }
