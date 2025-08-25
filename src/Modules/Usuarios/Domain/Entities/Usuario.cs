@@ -2,7 +2,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using Org.BouncyCastle.Pqc.Crypto.Ntru;
 
 namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Domain.Entities
 {

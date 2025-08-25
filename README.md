@@ -1,6 +1,6 @@
-## Campuslove_Ivanna_Sebastianç
+## Campuslove_Ivanna_Sebastian
 
 ### Autores
 
-Juan Sebastian Mora Patiño
-Ivanna Paternina Mercado 
+-Juan Sebastian Mora Patiño.
+-Ivanna Paternina Mercado.
