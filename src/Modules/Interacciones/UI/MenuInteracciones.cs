@@ -40,6 +40,20 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.UI
                 Console.WriteLine("| 3. Ver mis interacciones 📋      |");
                 Console.WriteLine("| 4. Regresar al menú principal ⬅ |");
                 Console.WriteLine("+=================================+");
+                Console.WriteLine("\n📋 Usuarios disponibles:");
+                Console.WriteLine("+-----+----------------------+");
+                Console.WriteLine("| ID  | Nombre               |");
+                Console.WriteLine("+-----+----------------------+");
+
+                var todosUsuario = await usuarioService.ConsultarUsuarioAsync();
+                foreach (var usuario in todosUsuario)
+                {
+                    if (usuario != null && usuario.Id != idUsuarioLogueado) // No mostrar al usuario logueado ni nulls
+                    {
+                        Console.WriteLine($"| {usuario.Id,-3} | {usuario.Nombre,-20} |");
+                    }
+                }
+                Console.WriteLine("+-----+----------------------+");
                 Console.Write("Seleccione una opción: ");
 
                 int opcion = LeerEntero("-> ");
@@ -51,6 +65,20 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.UI
                         Console.WriteLine("+=====================+");
                         Console.WriteLine("|     Dar LIKE 👍     |");
                         Console.WriteLine("+=====================+");
+                        Console.WriteLine("\n📋 Usuarios disponibles:");
+                        Console.WriteLine("+-----+----------------------+");
+                        Console.WriteLine("| ID  | Nombre               |");
+                        Console.WriteLine("+-----+----------------------+");
+
+                        var todosUsuarios = await usuarioService.ConsultarUsuarioAsync();
+                        foreach (var usuario in todosUsuarios)
+                        {
+                            if (usuario != null && usuario.Id != idUsuarioLogueado) // No mostrar al usuario logueado ni nulls
+                            {
+                                Console.WriteLine($"| {usuario.Id,-3} | {usuario.Nombre,-20} |");
+                            }
+                        }
+                        Console.WriteLine("+-----+----------------------+");
                         int idLike = LeerEntero("ID del usuario destino: ");
                         Usuario? usuarioLike = await usuarioService.ObtenerUsuarioAsync(idLike);
                         if (usuarioLike != null)
@@ -71,6 +99,20 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.UI
                         Console.WriteLine("+========================+");
                         Console.WriteLine("|     Dar DISLIKE 👎     |");
                         Console.WriteLine("+========================+");
+                        Console.WriteLine("\n📋 Usuarios disponibles:");
+                        Console.WriteLine("+-----+----------------------+");
+                        Console.WriteLine("| ID  | Nombre               |");
+                        Console.WriteLine("+-----+----------------------+");
+
+                        var todosUsuariosDislike = await usuarioService.ConsultarUsuarioAsync();
+                        foreach (var usuario in todosUsuariosDislike)
+                        {
+                            if (usuario != null && usuario.Id != idUsuarioLogueado) // No mostrar al usuario logueado ni nulls
+                            {
+                                Console.WriteLine($"| {usuario.Id,-3} | {usuario.Nombre,-20} |");
+                            }
+                        }
+                        Console.WriteLine("+-----+----------------------+");
                         int idDislike = LeerEntero("ID del usuario destino: ");
                         Usuario? usuarioDislike = await usuarioService.ObtenerUsuarioAsync(idDislike);
                         if (usuarioDislike != null)

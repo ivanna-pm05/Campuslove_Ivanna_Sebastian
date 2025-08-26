@@ -16,7 +16,7 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Services
             _usuariorepo = usuariorepo;
         }
 
-        public Task<IEnumerable<Usuario>> ConsultarJugadorAsync()
+        public Task<IEnumerable<Usuario>> ConsultarUsuarioAsync()
         {
             return _usuariorepo.GetAllAsync()!;
         }

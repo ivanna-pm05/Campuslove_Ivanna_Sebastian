@@ -14,7 +14,7 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Interface
         Task EditarUsuario(int id, string NuevoNombre, int NuevaEdad, string NuevoGenero, string NuevaCarrera, string NuevoIntereses, string NuevaFrases);
         Task EliminarUsuario(int id);
         Task<Usuario?> ObtenerUsuarioAsync(int id);
-        Task<IEnumerable<Usuario>> ConsultarJugadorAsync();
+        Task<IEnumerable<Usuario>> ConsultarUsuarioAsync();
         Task<Usuario?> ObtenerUsuarioPorNombreAsync(string nombre);
 
     }

@@ -35,16 +35,6 @@ while (!salir)
             await new MenuUsuarios(context).RenderMenu();
             break;
         case 2:
-            /* var usuarioRepo = new UsuarioRepository(context);
-            var usuarioService = new UsuarioService(usuarioRepo);
-
-            var interaccionRepo = new InteraccionRepository(context);
-            var interaccionService = new InteraccionService(interaccionRepo);
-
-            int usuarioId = LeerEntero("Ingrese su ID de usuario para continuar: ");
-
-            var menuPerfiles = new MenuPerfiles(usuarioService, interaccionService, usuarioId);
-            await menuPerfiles.RenderMenu(); */
             int idUsuarioLogueado = LeerEntero("Ingrese su ID de usuario para continuar: ");
             await new MenuInteracciones(context).RenderMenu(idUsuarioLogueado);
             break;

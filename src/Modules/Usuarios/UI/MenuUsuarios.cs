@@ -104,7 +104,7 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                                 
                                 if (!usuario.PerfilCompleto)
                                 {
-                                    Console.WriteLine("⚠ Tu perfil está incompleto. Ve a 'Completar Perfil'.");
+                                    Console.WriteLine("⚠ Tu perfil está incompleto. Ve a 'Ingresar Datos Perfil'.");
                                 }
                             }
                             else
@@ -127,8 +127,6 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                         Console.WriteLine("+=======================+");
                         Console.WriteLine("|      Datos Perfil     |");
                         Console.WriteLine("+=======================+");
-                        
-                        Console.Write("Edad: ");
                         int edad = LeerEntero("Edad: ");
                         
                         Console.Write("Género (F/M/O): ");
@@ -193,19 +191,13 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                         Console.WriteLine("+==================+");
                         Console.WriteLine("|   Editar Perfil  |");
                         Console.WriteLine("+==================+");
-                        
-                        Console.Write("Nueva Edad: ");
                         int nuevaEdad = LeerEntero("Nueva edad: ");
-                        
                         Console.Write("Nuevo Género (F/M/O): ");
                         string? nuevoGenero = Console.ReadLine();
-                        
                         Console.Write("Nueva Carrera: ");
                         string? nuevaCarrera = Console.ReadLine();
-                        
                         Console.Write("Nuevos Intereses: ");
                         string? nuevosIntereses = Console.ReadLine();
-                        
                         Console.Write("Nuevas Frases: ");
                         string? nuevasFrases = Console.ReadLine();
 
