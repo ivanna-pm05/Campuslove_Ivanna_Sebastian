@@ -14,6 +14,7 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
         private readonly AppDbContext _context;
         readonly UsuarioRepository _usuariorepo = null!;
         readonly UsuarioService service = null!;
+        private Usuario? _usuarioLogueado = null;
 
         public MenuUsuarios(AppDbContext context)
         {
@@ -32,10 +33,11 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                 Console.WriteLine("+===============================+");
                 Console.WriteLine("| 1. Registrar Usuario          |");
                 Console.WriteLine("| 2. Iniciar Sesion             |");
-                Console.WriteLine("| 3. Editar Usuario             |");
+                Console.WriteLine("| 3. Ingresar Datos Usuario     |");
                 Console.WriteLine("| 4. Eliminar Usuario           |");
                 Console.WriteLine("| 5. Buscar Usuario             |");
-                Console.WriteLine("| 6. Regresar al menú principal |");
+                Console.WriteLine("| 6. Editar Usuario             |");
+                Console.WriteLine("| 7. Regresar al menú principal |");
                 Console.WriteLine("+===============================+");
                 Console.Write("Seleccione una opción: ");
 
@@ -50,82 +52,110 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                         Console.WriteLine("+=====================+");
                         Console.Write("Nombre Usuario: ");
                         string? nombre = Console.ReadLine();
-                        int edad = LeerEntero("Edad Usuario");
-                        Console.WriteLine("Ingrese la contraseña (letras y / o números):");
+                        Console.Write("Contraseña: ");
                         string? clave = Console.ReadLine();
-                        Console.Write("Genero: ");
-                        string? genero = Console.ReadLine();
-                        Console.Write("Carrera: ");
-                        string? carrera = Console.ReadLine();
-                        Console.Write("Intereces: ");
-                        string? intereses = Console.ReadLine();
-                        Console.Write("Frases: ");
-                        string? frases = Console.ReadLine();
-                        await service.RegistrarUsuarioAsync(nombre!, clave!, edad!, genero!, carrera!, intereses!, frases!);
-                        Console.Write("✅ Usuario Registrado.");
+                        if (string.IsNullOrWhiteSpace(nombre) || string.IsNullOrWhiteSpace(clave))
+                        {
+                            Console.WriteLine("❌ Nombre y contraseña son obligatorios.");
+                            Console.WriteLine("\nPresione una tecla para continuar...");
+                            Console.ReadKey();
+                            return;
+                        }
+                        try
+                        {
+                            await service.RegistrarUsuarioAsync(nombre, clave);
+                            Console.WriteLine("✅ Usuario registrado. Ahora inicia sesión para completar tu perfil.");
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"❌ Error: {ex.Message}");
+                        }
+                        
                         Console.WriteLine("\nPresione una tecla para continuar...");
                         Console.ReadKey();
+        
                         break;
                     case 2:
                         Console.Clear();
                         Console.WriteLine("╔════════════════════════════════════════════╗");
-                        Console.WriteLine("║               Iniciar Sesion               ║");
+                        Console.WriteLine("║               Iniciar Sesión               ║");
                         Console.WriteLine("╠════════════════════════════════════════════╣");
-                        Console.WriteLine("║          Ingrese el nombre del usuario     ║");
-                        Console.WriteLine("╚════════════════════════════════════════════╝");
+                        
+                        Console.Write("Nombre de usuario: ");
                         string nombre2 = Console.ReadLine()!;
 
-                        if (string.IsNullOrWhiteSpace(nombre2))
+                        Console.Write("Contraseña: ");
+                        string clave2 = Console.ReadLine()!;
+
+                        if (string.IsNullOrWhiteSpace(nombre2) || string.IsNullOrWhiteSpace(clave2))
                         {
-                            Console.WriteLine("⚠️ El nombre de usuario no puede estar vacío.");
+                            Console.WriteLine("❌ Nombre y contraseña son obligatorios.");
                             Console.ReadKey();
-                            break;
+                            return;
                         }
 
-                        Usuario? usuario = await service.ObtenerUsuarioPorNombreAsync(nombre2);
-
-                        if (usuario == null)
+                        try
                         {
-                            Console.WriteLine("❌ Usuario no encontrado.");
-                            Console.ReadKey();
-                            break;
+                            var usuario = await service.LoginAsync(nombre2, clave2);
+                            if (usuario != null)
+                            {
+                                _usuarioLogueado = usuario;
+                                Console.WriteLine($"✅ Bienvenido, {usuario.Nombre}.");
+                                
+                                if (!usuario.PerfilCompleto)
+                                {
+                                    Console.WriteLine("⚠ Tu perfil está incompleto. Ve a 'Completar Perfil'.");
+                                }
+                            }
+                            else
+                            {
+                                Console.WriteLine("❌ Credenciales incorrectas.");
+                            }
                         }
-
-                        Console.Write("Ingrese la contraseña: ");
-                        string? claveIngresada = Console.ReadLine();
-
-                        if (usuario.Clave == claveIngresada)
+                        catch (Exception ex)
                         {
-                            Sesion.IniciarSesion(usuario); // 👉 Guardamos al usuario en sesión
-                            Console.WriteLine($"✅ Bienvenido, {usuario.Nombre}.");
-                            Console.WriteLine("✅ Inicio de sesión exitoso.");
+                            Console.WriteLine($"❌ Error: {ex.Message}");
                         }
-                        else
-                        {
-                            Console.WriteLine("❌ Contraseña incorrecta.");
-                        }
-
+                        
                         Console.ReadKey();
                         break;
 
                     case 3:
-                        Console.WriteLine("+==================+");
-                        Console.WriteLine("|  Editar Usuario  |");
-                        Console.WriteLine("+==================+");
-                        int idUp = LeerEntero("ID a editar: ");
-                        Console.Write("Nuevo Usuario: ");
-                        string? nuevoName = Console.ReadLine();
-                        int NuevaEdad = LeerEntero("Nueva edad: ");
-                        Console.Write("Nuevo Genero (F/M/O): ");
-                        string? NuevoGenero = Console.ReadLine();
-                        Console.Write("Nueva Carrera: ");
-                        string? NuevaCarrera = Console.ReadLine();
-                        Console.Write("Nuevos Intereces: ");
-                        string? NuevoIntereces = Console.ReadLine();
-                        Console.Write("Nuevas Frases: ");
-                        string? NuevaFrases = Console.ReadLine();
-                        await service.EditarUsuario(idUp, nuevoName!, NuevaEdad!, NuevoGenero!, NuevaCarrera!, NuevoIntereces!, NuevaFrases!);
-                        Console.WriteLine("✏️ Editado.");
+                        if ( _usuarioLogueado == null) return;
+
+                        Console.Clear();
+                        Console.WriteLine("+=======================+");
+                        Console.WriteLine("|      Datos Perfil     |");
+                        Console.WriteLine("+=======================+");
+                        
+                        Console.Write("Edad: ");
+                        int edad = LeerEntero("Edad: ");
+                        
+                        Console.Write("Género (F/M/O): ");
+                        string? genero = Console.ReadLine();
+                        
+                        Console.Write("Carrera: ");
+                        string? carrera = Console.ReadLine();
+                        
+                        Console.Write("Intereses: ");
+                        string? intereses = Console.ReadLine();
+                        
+                        Console.Write("Frases: ");
+                        string? frases = Console.ReadLine();
+
+                        try
+                        {
+                            await service.CompletarPerfilAsync(_usuarioLogueado.Id, edad, genero!, carrera!, intereses!, frases!);
+                            Console.WriteLine("✅ Perfil completado exitosamente.");
+                            
+                            // Actualizar usuario en sesión
+                            _usuarioLogueado = await service.ObtenerUsuarioAsync(_usuarioLogueado.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"❌ Error: {ex.Message}");
+                        }
+                        
                         Console.WriteLine("\nPresione una tecla para continuar...");
                         Console.ReadKey();
                         break;
@@ -156,8 +186,47 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                         Console.WriteLine("\nPresione una tecla para continuar...");
                         Console.ReadKey();
                         break;
-
                     case 6:
+                        if (_usuarioLogueado == null) return;
+
+                        Console.Clear();
+                        Console.WriteLine("+==================+");
+                        Console.WriteLine("|   Editar Perfil  |");
+                        Console.WriteLine("+==================+");
+                        
+                        Console.Write("Nueva Edad: ");
+                        int nuevaEdad = LeerEntero("Nueva edad: ");
+                        
+                        Console.Write("Nuevo Género (F/M/O): ");
+                        string? nuevoGenero = Console.ReadLine();
+                        
+                        Console.Write("Nueva Carrera: ");
+                        string? nuevaCarrera = Console.ReadLine();
+                        
+                        Console.Write("Nuevos Intereses: ");
+                        string? nuevosIntereses = Console.ReadLine();
+                        
+                        Console.Write("Nuevas Frases: ");
+                        string? nuevasFrases = Console.ReadLine();
+
+                        try
+                        {
+                            await service.EditarUsuario(_usuarioLogueado.Id, _usuarioLogueado.Nombre!, 
+                                nuevaEdad, nuevoGenero!, nuevaCarrera!, nuevosIntereses!, nuevasFrases!);
+                            Console.WriteLine("✅ Perfil actualizado exitosamente.");
+                            
+                            // Actualizar usuario en sesión
+                            _usuarioLogueado = await service.ObtenerUsuarioAsync(_usuarioLogueado.Id);
+                        }
+                        catch (Exception ex)
+                        {
+                            Console.WriteLine($"❌ Error: {ex.Message}");
+                        }
+                        
+                        Console.WriteLine("\nPresione una tecla para continuar...");
+                        Console.ReadKey();
+                        break;
+                    case 7:
                         salir = true;
                         break;
                     default:

@@ -9,25 +9,16 @@ USE CampusLove;
 -- =========================================
 CREATE TABLE IF NOT EXISTS usuarios (
     Id INT AUTO_INCREMENT PRIMARY KEY,
-    Nombre VARCHAR(100) NOT NULL,
-    Clave VARCHAR(100) NOT NULL,
-    Edad INT NOT NULL,
-    Genero ENUM('M', 'F', 'O') NOT NULL DEFAULT 'O', 
-    Carrera VARCHAR(100) NOT NULL,
-    Intereses TEXT NOT NULL,
-    Frases VARCHAR(255)
-)ENGINE=INNODB;
+    Nombre VARCHAR(100) NOT NULL UNIQUE,  
+    Clave VARCHAR(255) NOT NULL,         
+    Edad INT NULL,                        
+    Genero ENUM('M', 'F', 'O') NULL,      
+    Carrera VARCHAR(100) NULL,            
+    Intereses TEXT NULL,                  
+    Frases VARCHAR(255) NULL,             
+    PerfilCompleto BOOLEAN NOT NULL DEFAULT FALSE 
+) ENGINE=INNODB;
 
-
-CREATE TABLE interacciones (
-    Id INT PRIMARY KEY IDENTITY(1,1),  
-    IdUsuarioOrigen INT NOT NULL,     
-    IdUsuarioDestino INT NOT NULL,    
-    TipoInteraccion INT NOT NULL,    
-    FechaInteraccion DATETIME NOT NULL DEFAULT GETDATE(),
-    CONSTRAINT FK_Interacciones_UsuarioOrigen FOREIGN KEY (IdUsuarioOrigen) REFERENCES usuarios(Id),
-    CONSTRAINT FK_Interacciones_UsuarioDestino FOREIGN KEY (IdUsuarioDestino) REFERENCES usuarios(Id)
-)ENGINE=INNODB;
 
 
 CREATE TABLE interacciones (

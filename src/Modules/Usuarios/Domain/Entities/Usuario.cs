@@ -15,5 +15,6 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Domain.Entities
         public string? Carrera { get; set; }
         public string? Intereses { get; set; }
         public string? Frases { get; set; }
+        public bool PerfilCompleto { get; set; }
     }
 }

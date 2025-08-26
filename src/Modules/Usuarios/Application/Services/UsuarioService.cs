@@ -20,7 +20,7 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Services
         {
             return _usuariorepo.GetAllAsync()!;
         }
-        public async Task RegistrarUsuarioAsync(string nombre, string clave, int edad, string genero, string carrera, string intereses, string frases)
+        public async Task RegistrarUsuarioAsync(string nombre, string clave)
         {
             var existente = await _usuariorepo.GetAllAsync();
             if (existente.Any(u => u?.Nombre == nombre))
@@ -29,15 +29,25 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Services
             var usuario = new Usuario
             {
                 Nombre = nombre,
-                Clave = clave,
-                Edad = edad,
-                Genero = genero,
-                Carrera = carrera,
-                Intereses = intereses,
-                Frases = frases
+                Clave = clave
             };
-
             _usuariorepo.Add(usuario);
+            await _usuariorepo.SaveAsync();
+        }
+        public async Task CompletarPerfilAsync(int id, int edad, string genero, string carrera, string intereses, string frases)
+        {
+            var usuario = await _usuariorepo.GetByIdAsync(id);
+            if (usuario == null)
+                throw new Exception("Usuario no encontrado.");
+
+            usuario.Edad = edad;
+            usuario.Genero = genero;
+            usuario.Carrera = carrera;
+            usuario.Intereses = intereses;
+            usuario.Frases = frases;
+            usuario.PerfilCompleto = true;
+
+            _usuariorepo.Update(usuario);
             await _usuariorepo.SaveAsync();
         }
         public async Task EditarUsuario(int id, string nuevoNombre, int nuevaEdad, string nuevoGenero, string nuevaCarrera, string nuevoIntereses, string nuevaFrases)
@@ -55,6 +65,15 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Services
 
             _usuariorepo.Update(usuario);
             await _usuariorepo.SaveAsync();
+        }
+        public async Task<Usuario?> LoginAsync(string nombre, string clave)
+        {
+            var usuario = await _usuariorepo.GetByNombreAsync(nombre);
+            
+            if (usuario == null || usuario.Clave != clave) // ¡Debes comparar con contraseña encriptada!
+                return null;
+            
+            return usuario;
         }
 
         public async Task EliminarUsuario(int id)

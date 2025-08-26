@@ -10,33 +10,35 @@ namespace Campuslove_Ivanna_Sebastian.src.Shared.Configuration
 {
     public class UsuarioConfiguration : IEntityTypeConfiguration<Usuario>
     {
-        public void Configure(EntityTypeBuilder<Usuario> builder)
-        {
-            builder.ToTable("usuarios");
+              public void Configure(EntityTypeBuilder<Usuario> builder)
+              {
+                     builder.ToTable("usuarios");
 
-            builder.HasKey(u => u.Id);
+                     builder.HasKey(u => u.Id);
 
-            builder.Property(u => u.Nombre)
-                   .IsRequired()
-                   .HasMaxLength(100);
+                     builder.Property(u => u.Nombre)
+                            .IsRequired()
+                            .HasMaxLength(100);
+                     builder.Property(u => u.Clave)
+                              .IsRequired()
+                              .HasMaxLength(225);
+                     builder.Property(u => u.Edad)
+                            .IsRequired();
 
-            builder.Property(u => u.Edad)
-                   .IsRequired();
-            builder.Property(u => u.Clave)
-                     .IsRequired()
-                     .HasMaxLength(100);
+                     builder.Property(u => u.Genero)
+                            .HasMaxLength(20);
 
-            builder.Property(u => u.Genero)
-                   .HasMaxLength(20);
+                     builder.Property(u => u.Carrera)
+                            .HasMaxLength(100);
 
-            builder.Property(u => u.Carrera)
-                   .HasMaxLength(100);
+                     builder.Property(u => u.Intereses)
+                            .HasMaxLength(200);
 
-            builder.Property(u => u.Intereses)
-                   .HasMaxLength(200);
-
-            builder.Property(u => u.Frases)
-                   .HasMaxLength(250);
+                     builder.Property(u => u.Frases)
+                            .HasMaxLength(250);
+                     builder.Property(u => u.PerfilCompleto)  // ← NUEVA PROPIEDAD
+                            .IsRequired()
+                            .HasDefaultValue(false);
         }
     }
 }
