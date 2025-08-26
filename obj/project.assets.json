@@ -4505,19 +4505,19 @@
     ]
   },
   "packageFolders": {
-    "C:\\Users\\pater\\.nuget\\packages\\": {}
+    "C:\\Users\\Sebas\\.nuget\\packages\\": {}
   },
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "C:\\Users\\pater\\Campuslove_Ivanna_Sebastian\\Campuslove_Ivanna_Sebastian.csproj",
+      "projectUniqueName": "C:\\Users\\Sebas\\Campuslove_Ivanna_Sebastian\\Campuslove_Ivanna_Sebastian.csproj",
       "projectName": "Campuslove_Ivanna_Sebastian",
-      "projectPath": "C:\\Users\\pater\\Campuslove_Ivanna_Sebastian\\Campuslove_Ivanna_Sebastian.csproj",
-      "packagesPath": "C:\\Users\\pater\\.nuget\\packages\\",
-      "outputPath": "C:\\Users\\pater\\Campuslove_Ivanna_Sebastian\\obj\\",
+      "projectPath": "C:\\Users\\Sebas\\Campuslove_Ivanna_Sebastian\\Campuslove_Ivanna_Sebastian.csproj",
+      "packagesPath": "C:\\Users\\Sebas\\.nuget\\packages\\",
+      "outputPath": "C:\\Users\\Sebas\\Campuslove_Ivanna_Sebastian\\obj\\",
       "projectStyle": "PackageReference",
       "configFilePaths": [
-        "C:\\Users\\pater\\AppData\\Roaming\\NuGet\\NuGet.Config"
+        "C:\\Users\\Sebas\\AppData\\Roaming\\NuGet\\NuGet.Config"
       ],
       "originalTargetFrameworks": [
         "net9.0"
@@ -4594,7 +4594,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.303/PortableRuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.304/PortableRuntimeIdentifierGraph.json"
       }
     }
   }

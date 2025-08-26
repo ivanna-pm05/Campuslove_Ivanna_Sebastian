@@ -1,4 +1,4 @@
-/* using System;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Interfaces;
@@ -27,7 +27,7 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
             bool salir = false;
 
             // Obtengo todos los usuarios menos el actual
-            var todos = await _usuarioService.ConsultarJugadorAsync();
+            var todos = await _usuarioService.ConsultarUsuarioAsync();
             var perfiles = todos.Where(u => u.Id != _usuarioId).ToList();
 
             if (!perfiles.Any())
@@ -107,4 +107,4 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
             }
         }
     }
-} */
+} 
