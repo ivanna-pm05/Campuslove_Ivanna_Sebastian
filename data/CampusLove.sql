@@ -7,19 +7,43 @@ USE CampusLove;
 -- =========================================
 -- TABLA: Usuarios
 -- =========================================
-CREATE TABLE IF NOT EXISTS Usuarios (
-    IdUsuario INT AUTO_INCREMENT PRIMARY KEY,
-    NombreCompleto VARCHAR(100) NOT NULL,
+CREATE TABLE IF NOT EXISTS usuarios (
+    Id INT AUTO_INCREMENT PRIMARY KEY,
+    Nombre VARCHAR(100) NOT NULL,
+    Clave VARCHAR(100) NOT NULL,
     Edad INT NOT NULL,
-    Genero ENUM('M', 'F', 'O') NOT NULL DEFAULT 'O', -- M = Masculino, F = Femenino, O = Otro
+    Genero ENUM('M', 'F', 'O') NOT NULL DEFAULT 'O', 
     Carrera VARCHAR(100) NOT NULL,
     Intereses TEXT NOT NULL,
-    FrasePerfil VARCHAR(255),
-    CantidadLikes INT DEFAULT 0,
-    CantidadMatches INT DEFAULT 0,
-    FechaRegistro TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-);
+    Frases VARCHAR(255)
+)ENGINE=INNODB;
 
+
+CREATE TABLE interacciones (
+    Id INT PRIMARY KEY IDENTITY(1,1),  
+    IdUsuarioOrigen INT NOT NULL,     
+    IdUsuarioDestino INT NOT NULL,    
+    TipoInteraccion INT NOT NULL,    
+    FechaInteraccion DATETIME NOT NULL DEFAULT GETDATE(),
+    CONSTRAINT FK_Interacciones_UsuarioOrigen FOREIGN KEY (IdUsuarioOrigen) REFERENCES usuarios(Id),
+    CONSTRAINT FK_Interacciones_UsuarioDestino FOREIGN KEY (IdUsuarioDestino) REFERENCES usuarios(Id)
+)ENGINE=INNODB;
+
+
+CREATE TABLE interacciones (
+  Id INT NOT NULL AUTO_INCREMENT,
+  IdUsuarioOrigen INT NOT NULL,
+  IdUsuarioDestino INT NOT NULL,
+  TipoInteraccion VARCHAR(20) NOT NULL, -- almacena 'LIKE' o 'DISLIKE'
+  FechaInteraccion DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (Id),
+  INDEX IX_Interacciones_Origen (IdUsuarioOrigen),
+  INDEX IX_Interacciones_Destino (IdUsuarioDestino),
+  CONSTRAINT FK_Interacciones_UsuarioOrigen
+    FOREIGN KEY (IdUsuarioOrigen) REFERENCES usuarios(Id) ON DELETE CASCADE,
+  CONSTRAINT FK_Interacciones_UsuarioDestino
+    FOREIGN KEY (IdUsuarioDestino) REFERENCES usuarios (Id) ON DELETE CASCADE
+) ENGINE=INNODB;
 -- =========================================
 -- TABLA: Interacciones
 -- =========================================

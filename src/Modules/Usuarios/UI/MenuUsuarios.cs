@@ -68,51 +68,46 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                         break;
                     case 2:
                         Console.Clear();
-                            Console.WriteLine("╔════════════════════════════════════════════╗");
-                            Console.WriteLine("║               Iniciar Sesion               ║");
-                            Console.WriteLine("╠════════════════════════════════════════════╣");
-                            Console.WriteLine("║          Ingrese el nombre del usuario     ║");
-                            Console.WriteLine("╚════════════════════════════════════════════╝");
-                            string nombre2 = Console.ReadLine()!;
+                        Console.WriteLine("╔════════════════════════════════════════════╗");
+                        Console.WriteLine("║               Iniciar Sesion               ║");
+                        Console.WriteLine("╠════════════════════════════════════════════╣");
+                        Console.WriteLine("║          Ingrese el nombre del usuario     ║");
+                        Console.WriteLine("╚════════════════════════════════════════════╝");
+                        string nombre2 = Console.ReadLine()!;
 
-                            if (string.IsNullOrWhiteSpace(nombre2))
-                            {
-                                Console.WriteLine("⚠️ El nombre de usuario no puede estar vacío.");
-                                Console.ReadKey();
-                                break;
-                            }
-
-                           
-                            Usuario? usuario = await service.ObtenerUsuarioPorNombreAsync(nombre2); 
-                            
-                            
-
-                            if (usuario == null)
-                            {
-                                Console.WriteLine("❌ Usuario no encontrado.");
-                                Console.ReadKey();
-                                break;
-                            }
-
-                           
-                            Console.Write("Ingrese la contraseña: ");
-                            string? claveIngresada = Console.ReadLine();
-
-                            
-                            if (usuario.Clave == claveIngresada)
-                            {
-                                Console.WriteLine($"✅ Bienvenido, {usuario.Nombre}.");
-                                Sesion.UsuarioLogueado = true;
-                                Console.WriteLine("✅ Inicio de sesión exitoso.");
-                                await new MenuPerfiles(_context).RenderMenu();
-                            }
-                            else
-                            {
-                                Console.WriteLine("❌ Contraseña incorrecta.");
-                            }
-
+                        if (string.IsNullOrWhiteSpace(nombre2))
+                        {
+                            Console.WriteLine("⚠️ El nombre de usuario no puede estar vacío.");
                             Console.ReadKey();
+                            break;
+                        }
+
+                        Usuario? usuario = await service.ObtenerUsuarioPorNombreAsync(nombre2);
+
+                        if (usuario == null)
+                        {
+                            Console.WriteLine("❌ Usuario no encontrado.");
+                            Console.ReadKey();
+                            break;
+                        }
+
+                        Console.Write("Ingrese la contraseña: ");
+                        string? claveIngresada = Console.ReadLine();
+
+                        if (usuario.Clave == claveIngresada)
+                        {
+                            Sesion.IniciarSesion(usuario); // 👉 Guardamos al usuario en sesión
+                            Console.WriteLine($"✅ Bienvenido, {usuario.Nombre}.");
+                            Console.WriteLine("✅ Inicio de sesión exitoso.");
+                        }
+                        else
+                        {
+                            Console.WriteLine("❌ Contraseña incorrecta.");
+                        }
+
+                        Console.ReadKey();
                         break;
+
                     case 3:
                         Console.WriteLine("+==================+");
                         Console.WriteLine("|  Editar Usuario  |");
@@ -153,9 +148,9 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI
                         Console.WriteLine("|    Buscar Usuario   |");
                         Console.WriteLine("+=====================+");
                         int id = LeerEntero("ID del Usuario a buscar: ");
-                        Usuario? usuario = await service.ObtenerUsuarioAsync(id);
-                        if (usuario != null)
-                            Console.WriteLine($"👤 {usuario.Nombre} - {usuario.Edad} - {usuario.Genero} - {usuario.Carrera} - {usuario.Intereses} - {usuario.Frases}");
+                        Usuario? usuarioEncontado = await service.ObtenerUsuarioAsync(id);
+                        if (usuarioEncontado != null)
+                            Console.WriteLine($"👤 {usuarioEncontado.Nombre} - {usuarioEncontado.Edad} - {usuarioEncontado.Genero} - {usuarioEncontado.Carrera} - {usuarioEncontado.Intereses} - {usuarioEncontado.Frases}");
                         else
                             Console.WriteLine("❌ Usuario no encontrado.");
                         Console.WriteLine("\nPresione una tecla para continuar...");

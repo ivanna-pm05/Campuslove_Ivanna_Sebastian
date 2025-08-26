@@ -22,6 +22,9 @@ namespace Campuslove_Ivanna_Sebastian.src.Shared.Configuration
 
             builder.Property(u => u.Edad)
                    .IsRequired();
+            builder.Property(u => u.Clave)
+                     .IsRequired()
+                     .HasMaxLength(100);
 
             builder.Property(u => u.Genero)
                    .HasMaxLength(20);

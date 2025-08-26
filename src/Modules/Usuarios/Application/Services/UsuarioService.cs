@@ -73,5 +73,6 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Services
         {
             return await _usuariorepo.GetByNombreAsync(nombre);
         }
+        
     }
 }

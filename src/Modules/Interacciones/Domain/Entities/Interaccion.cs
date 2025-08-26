@@ -1,12 +1,10 @@
 using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 namespace Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Domain.Entities
 {
-    public enum TipoInteraccion
-    {
-        LIKE,
-        DISLIKE
-    }
 
     public class Interaccion
     {
@@ -15,5 +13,10 @@ namespace Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Domain.Entities
         public int IdUsuarioDestino { get; set; }
         public TipoInteraccion TipoInteraccion { get; set; }  // Enum en vez de bool
         public DateTime FechaInteraccion { get; set; } = DateTime.Now;
+    }
+    public enum TipoInteraccion
+    {
+        LIKE,
+        DISLIKE
     }
 }

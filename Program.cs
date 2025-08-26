@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Application.Services;
 using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.Infrastructure.Repositories;
+using Campuslove_Ivanna_Sebastian.src.Modules.Interacciones.UI;
 using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Application.Services;
 using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.Infrastructure.Repositories;
 using Campuslove_Ivanna_Sebastian.src.Modules.Usuarios.UI;
@@ -34,7 +35,7 @@ while (!salir)
             await new MenuUsuarios(context).RenderMenu();
             break;
         case 2:
-            var usuarioRepo = new UsuarioRepository(context);
+            /* var usuarioRepo = new UsuarioRepository(context);
             var usuarioService = new UsuarioService(usuarioRepo);
 
             var interaccionRepo = new InteraccionRepository(context);
@@ -43,9 +44,11 @@ while (!salir)
             int usuarioId = LeerEntero("Ingrese su ID de usuario para continuar: ");
 
             var menuPerfiles = new MenuPerfiles(usuarioService, interaccionService, usuarioId);
-            await menuPerfiles.RenderMenu();
-             
+            await menuPerfiles.RenderMenu(); */
+            int idUsuarioLogueado = LeerEntero("Ingrese su ID de usuario para continuar: ");
+            await new MenuInteracciones(context).RenderMenu(idUsuarioLogueado);
             break;
+           
         case 3:
             //await new MenuMaches(context).RenderMenu();
             break;
